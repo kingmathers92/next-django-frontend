@@ -1,12 +1,10 @@
 "use client";
-import { useRouter } from "next/navigation";
 import { useAuth } from "@/components/authProvider";
 
 const LOGIN_URL = "/api/login/";
 
 export default function Page() {
   const auth = useAuth();
-  const router = useRouter();
   async function handleSubmit(e) {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -23,7 +21,6 @@ export default function Page() {
     if (response.ok) {
       console.log("logged in");
       auth.login();
-      router.replace("/");
     }
   }
   return (
