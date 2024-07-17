@@ -1,6 +1,7 @@
 "use client";
 
-const LOGIN_URL = "http://127.0.0.1:8001/api/token/pair";
+//const LOGIN_URL = "http://127.0.0.1:8001/api/token/pair";
+const LOGIN_URL = "/api/login/";
 
 export default function Page() {
   async function handleSubmit(e) {
