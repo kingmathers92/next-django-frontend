@@ -1,12 +1,11 @@
 "use client";
-
-//const LOGIN_URL = "http://127.0.0.1:8001/api/token/pair";
+import { useRouter } from "next/navigation";
 const LOGIN_URL = "/api/login/";
 
 export default function Page() {
+  const router = useRouter();
   async function handleSubmit(e) {
     e.preventDefault();
-    console.log(e, e.target);
     const formData = new FormData(e.target);
     const objectFromForm = Object.fromEntries(formData);
     const jsonData = JSON.stringify(objectFromForm);
@@ -18,10 +17,8 @@ export default function Page() {
       body: jsonData,
     };
     const response = await fetch(LOGIN_URL, requestOptions);
-    const data = await response.json();
-    console.log(data);
     if (response.ok) {
-      console.log("logged in");
+      router.replace("/");
     }
   }
   return (
