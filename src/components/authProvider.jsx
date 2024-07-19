@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  useRouter,
-  usePathname,
-  useParams,
-  useSearchParams,
-} from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 const { createContext, useContext, useState, useEffect } = require("react");
 
@@ -14,17 +9,16 @@ const AuthContext = createContext(null);
 const LOGIN_REDIRECT_URL = "/";
 const LOGOUT_REDIRECT_URL = "/login";
 const LOGIN_REQUIRED_URL = "/login";
-const LOCAL_STOARGE_KEY = "is-logged-in";
+const LOCAL_STORAGE_KEY = "is-logged-in";
 
 export function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const nextUrl = searchParams.get("next");
-  console.log(nextUrl);
+
   useEffect(() => {
-    const storedAuthStatus = localStorage.getItem(LOCAL_STOARGE_KEY);
+    const storedAuthStatus = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (storedAuthStatus) {
       const storedAuthStatusInt = parseInt(storedAuthStatus);
       setIsAuthenticated(storedAuthStatusInt);
@@ -33,14 +27,24 @@ export function AuthProvider({ children }) {
 
   const login = () => {
     setIsAuthenticated(true);
-    localStorage.setItem(LOCAL_STOARGE_KEY, "1");
-    console.log(searchParams);
-    router.replace(LOGIN_REDIRECT_URL);
+    localStorage.setItem(LOCAL_STORAGE_KEY, "1");
+    const nextUrl = searchParams.get("next");
+    const invalidNextUrl = ["/login", "/logout"];
+    console.log(nextUrl);
+    const nextUrlValid =
+      nextUrl && nextUrl.startsWith("/") && !invalidNextUrl.includes(nextUrl);
+    if (nextUrlValid) {
+      router.replace(nextUrl);
+      return;
+    } else {
+      router.replace(LOGIN_REDIRECT_URL);
+      return;
+    }
   };
 
   const logout = () => {
     setIsAuthenticated(false);
-    localStorage.setItem(LOCAL_STOARGE_KEY, "0");
+    localStorage.setItem(LOCAL_STORAGE_KEY, "0");
     router.replace(LOGOUT_REDIRECT_URL);
   };
 
@@ -49,6 +53,7 @@ export function AuthProvider({ children }) {
     setIsAuthenticated(false);
     localStorage.setItem(LOCAL_STORAGE_KEY, "0");
     let newUrl = `${LOGIN_REQUIRED_URL}?next=${pathname}`;
+    console.log(newUrl);
     if (LOGIN_REQUIRED_URL === pathname) {
       newUrl = `${LOGIN_REQUIRED_URL}`;
     }
