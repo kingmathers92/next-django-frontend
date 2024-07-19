@@ -30,9 +30,9 @@ export function AuthProvider({ children }) {
     localStorage.setItem(LOCAL_STORAGE_KEY, "1");
     const nextUrl = searchParams.get("next");
     const invalidNextUrl = ["/login", "/logout"];
-    console.log(nextUrl);
     const nextUrlValid =
       nextUrl && nextUrl.startsWith("/") && !invalidNextUrl.includes(nextUrl);
+    console.log(nextUrl, invalidNextUrl);
     if (nextUrlValid) {
       router.replace(nextUrl);
       return;
