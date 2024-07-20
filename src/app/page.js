@@ -1,4 +1,5 @@
 "use client";
+
 import useSWR from "swr";
 import { useAuth } from "@/components/authProvider";
 import { ThemeToggleButton } from "@/components/themeToggleButton";
