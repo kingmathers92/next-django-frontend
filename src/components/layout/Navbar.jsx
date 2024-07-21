@@ -39,7 +39,7 @@ export default function Navbar({ className }) {
           const shouldHide = !auth.isAuthenticated && linkItem.authRequired;
           return shouldHide ? null : (
             <Link
-              key={idx}
+              key={`nav-links-a-${idx}`}
               href={linkItem.href}
               className="text-muted-foreground transition-colors hover:text-foreground"
             >
@@ -65,7 +65,7 @@ export default function Navbar({ className }) {
               const shouldHide = !auth.isAuthenticated && linkItem.authRequired;
               return shouldHide ? null : (
                 <Link
-                  key={idx}
+                  key={`nav-links-b-${idx}`}
                   href={linkItem.href}
                   className="text-muted-foreground hover:text-foreground"
                 >
@@ -87,7 +87,7 @@ export default function Navbar({ className }) {
                     !auth.isAuthenticated && linkItem.authRequired;
                   return shouldHide ? null : (
                     <Link
-                      key={idx}
+                      key={`nav-links-c-${idx}`}
                       href={linkItem.href}
                       className="text-muted-foreground hover:text-foreground"
                     >
@@ -105,29 +105,35 @@ export default function Navbar({ className }) {
       </div>
       <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
         {auth.isAuthenticated ? (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="secondary" size="icon" className="rounded-full">
-                <CircleUser className="h-5 w-5" />
-                <span className="sr-only">Toggle user menu</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <div className="ml-auto space-x-2">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="secondary"
+                  size="icon"
+                  className="rounded-full"
+                >
+                  <CircleUser className="h-5 w-5" />
+                  <span className="sr-only">Toggle user menu</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>Settings</DropdownMenuItem>
+                <DropdownMenuItem>Support</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>Logout</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         ) : (
           <div className="ml-auto space-x-2">
             {NonUserLinks.map((linkItem, idx) => {
               const shouldHide = !auth.isAuthenticated && linkItem.authRequired;
               return shouldHide ? null : (
                 <Link
-                  key={idx}
+                  key={`nav-links-d-${idx}`}
                   href={linkItem.href}
                   className="text-muted-foreground transition-colors hover:text-foreground"
                 >
