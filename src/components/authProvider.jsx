@@ -10,9 +10,11 @@ const LOGIN_REDIRECT_URL = "/";
 const LOGOUT_REDIRECT_URL = "/login";
 const LOGIN_REQUIRED_URL = "/login";
 const LOCAL_STORAGE_KEY = "is-logged-in";
+const LOCAL_USERNAME_KEY = "username";
 
 export function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [username, setUsername] = useState("");
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -23,11 +25,21 @@ export function AuthProvider({ children }) {
       const storedAuthStatusInt = parseInt(storedAuthStatus);
       setIsAuthenticated(storedAuthStatusInt);
     }
+    const storedUsername = localStorage.getItem(LOCAL_USERNAME_KEY);
+    if (storedUsername) {
+      setUsername(storedUsername);
+    }
   }, []);
 
-  const login = () => {
+  const login = (username) => {
     setIsAuthenticated(true);
     localStorage.setItem(LOCAL_STORAGE_KEY, "1");
+    if (username) {
+      localStorage.setItem(LOCAL_USERNAME_KEY, `${username}`);
+      setUsername(username);
+    } else {
+      localStorage.removeItem(LOCAL_USERNAME_KEY);
+    }
     const nextUrl = searchParams.get("next");
     const invalidNextUrl = ["/login", "/logout"];
     const nextUrlValid =
@@ -62,7 +74,13 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, login, logout, loginRequiredRedirect }}
+      value={{
+        isAuthenticated,
+        login,
+        logout,
+        loginRequiredRedirect,
+        username,
+      }}
     >
       {children}
     </AuthContext.Provider>

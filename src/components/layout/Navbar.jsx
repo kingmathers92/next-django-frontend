@@ -1,31 +1,11 @@
 "use client";
 import Link from "next/link";
-import { CircleUser, Menu, Package2, Search } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useAuth } from "@/components/authProvider";
 import NavLinks, { NonUserLinks } from "./NavLinks";
+import BrandLink from "./BrandLink";
+import MobileNavbar from "./MobileNavbar";
+import AccountDropdown from "./AccountDropdown";
 
-function BrandLink({ displayName, className }) {
-  const finalClass = className
-    ? className
-    : "flex items-center gap-2 text-lg font-semibold md:text-base";
-  return (
-    <Link href="/" className={finalClass}>
-      <Package2 className="h-6 w-6" />
-      {displayName ? <span>SaaS</span> : <span className="sr-only">SaaS</span>}
-    </Link>
-  );
-}
 export default function Navbar({ className }) {
   const auth = useAuth();
   const finalClass = className
@@ -48,84 +28,14 @@ export default function Navbar({ className }) {
           );
         })}
       </nav>
-      <Sheet>
-        <SheetTrigger asChild>
-          <Button variant="outline" size="icon" className="shrink-0 md:hidden">
-            <Menu className="h-5 w-5" />
-            <span className="sr-only">Toggle navigation menu</span>
-          </Button>
-        </SheetTrigger>
-        <SheetContent side="left">
-          <nav className="grid gap-6 text-lg font-medium">
-            <BrandLink
-              displayName={true}
-              className="flex items-center gap-2 text-lg font-semibold"
-            />
-            {NavLinks.map((linkItem, idx) => {
-              const shouldHide = !auth.isAuthenticated && linkItem.authRequired;
-              return shouldHide ? null : (
-                <Link
-                  key={`nav-links-b-${idx}`}
-                  href={linkItem.href}
-                  className="text-muted-foreground hover:text-foreground"
-                >
-                  {linkItem.label}
-                </Link>
-              );
-            })}
-            {auth.isAuthenticated ? (
-              <Link
-                href="/logout"
-                className="text-muted-foreground hover:text-foreground"
-              >
-                Logout
-              </Link>
-            ) : (
-              <>
-                {NonUserLinks.map((linkItem, idx) => {
-                  const shouldHide =
-                    !auth.isAuthenticated && linkItem.authRequired;
-                  return shouldHide ? null : (
-                    <Link
-                      key={`nav-links-c-${idx}`}
-                      href={linkItem.href}
-                      className="text-muted-foreground hover:text-foreground"
-                    >
-                      {linkItem.label}
-                    </Link>
-                  );
-                })}
-              </>
-            )}
-          </nav>
-        </SheetContent>
-      </Sheet>
+      <MobileNavbar />
       <div className="md:hidden">
         <BrandLink displayName={true} />
       </div>
       <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
         {auth.isAuthenticated ? (
           <div className="ml-auto space-x-2">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="secondary"
-                  size="icon"
-                  className="rounded-full"
-                >
-                  <CircleUser className="h-5 w-5" />
-                  <span className="sr-only">Toggle user menu</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Settings</DropdownMenuItem>
-                <DropdownMenuItem>Support</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Logout</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <AccountDropdown />
           </div>
         ) : (
           <div className="ml-auto space-x-2">

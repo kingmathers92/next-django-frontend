@@ -17,10 +17,13 @@ export async function POST(request) {
   const response = await fetch(DJANGO_API_LOGIN_URL, requestOptions);
   const responseData = await response.json();
   if (response.ok) {
-    const { access, refresh } = responseData;
+    const { username, access, refresh } = responseData;
     setToken(access);
     setRefreshToken(refresh);
-    return NextResponse.json({ loggedIn: true }, { status: 200 });
+    return NextResponse.json(
+      { loggedIn: true, username: username },
+      { status: 200 }
+    );
   }
   return NextResponse.json(
     { loggedIn: false, ...responseData },
