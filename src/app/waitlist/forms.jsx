@@ -25,7 +25,6 @@ export default function WaitlistForm() {
     const response = await fetch(WAITLIST_API_URL, requestOptions);
     if (response.ok) {
       setMessage("Thank you for joining");
-      auth.login();
     } else {
       setError("There was an error with you request. Please try again");
     }

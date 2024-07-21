@@ -46,6 +46,7 @@ export async function POST(request) {
   console.log(response.status);
   try {
     const responseData = await response.json();
+    console.log(responseData);
   } catch (error) {
     return NextResponse.json(
       { message: "Invalid request" },
