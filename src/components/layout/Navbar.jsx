@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useAuth } from "@/components/authProvider";
-import NavLinks from "./NavLinks";
+import NavLinks, { NonUserLinks } from "./NavLinks";
 
 function BrandLink({ displayName, className }) {
   const finalClass = className
@@ -73,29 +73,38 @@ export default function Navbar({ className }) {
                 </Link>
               );
             })}
-            {auth.isAuthenticated && (
+            {auth.isAuthenticated ? (
               <Link
                 href="/logout"
                 className="text-muted-foreground hover:text-foreground"
               >
                 Logout
               </Link>
+            ) : (
+              <>
+                {NonUserLinks.map((linkItem, idx) => {
+                  const shouldHide =
+                    !auth.isAuthenticated && linkItem.authRequired;
+                  return shouldHide ? null : (
+                    <Link
+                      key={idx}
+                      href={linkItem.href}
+                      className="text-muted-foreground hover:text-foreground"
+                    >
+                      {linkItem.label}
+                    </Link>
+                  );
+                })}
+              </>
             )}
           </nav>
         </SheetContent>
       </Sheet>
+      <div className="md:hidden">
+        <BrandLink displayName={true} />
+      </div>
       <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
-        <form className="ml-auto flex-1 sm:flex-initial">
-          <div className="relative">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Search products..."
-              className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
-            />
-          </div>
-        </form>
-        {auth.isAuthenticated && (
+        {auth.isAuthenticated ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="secondary" size="icon" className="rounded-full">
@@ -112,6 +121,21 @@ export default function Navbar({ className }) {
               <DropdownMenuItem>Logout</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+        ) : (
+          <div className="ml-auto space-x-2">
+            {NonUserLinks.map((linkItem, idx) => {
+              const shouldHide = !auth.isAuthenticated && linkItem.authRequired;
+              return shouldHide ? null : (
+                <Link
+                  key={idx}
+                  href={linkItem.href}
+                  className="text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {linkItem.label}
+                </Link>
+              );
+            })}
+          </div>
         )}
       </div>
     </header>
