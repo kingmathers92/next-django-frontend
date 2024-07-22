@@ -21,8 +21,6 @@ export default function Home() {
         <WaitlistForm />
       </div>
       <div>{auth.isAuthenticated ? "hello user" : " Hello guest"}</div>
-      <div>{JSON.stringify(data)}</div>
-
       <div>
         <ThemeToggleButton></ThemeToggleButton>
       </div>
