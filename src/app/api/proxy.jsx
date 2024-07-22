@@ -1,3 +1,4 @@
+import { getToken } from "@/lib/auth";
 export default class ApiProxy {
   static async getHeaders(requireAuth) {
     let headers = {
@@ -24,6 +25,10 @@ export default class ApiProxy {
 
   static async get(endpoint, requireAuth) {
     const headers = await ApiProxy.getHeaders(requireAuth);
+    const requestOptions = {
+      method: "GET",
+      headers: headers,
+    };
     return await fetch(endpoint, requestOptions);
   }
 }
