@@ -39,7 +39,7 @@ export default function WaitlistTable() {
       auth.loginRequiredRedirect();
     }
   }, [auth, error]);
-
+  console.log(error);
   if (error) return <div>failed to load</div>;
   if (isLoading) return <div>loading...</div>;
   console.log(data);
