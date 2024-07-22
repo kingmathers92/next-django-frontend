@@ -47,7 +47,7 @@ export default function Page() {
           </div>
           <div className="grid gap-4">
             <form onSubmit={handleSubmit}>
-              <div className="grid gap-2">
+              <div className="grid gap-2 pb-2">
                 <Label htmlFor="username">Username</Label>
                 <Input
                   id="username"
@@ -57,7 +57,7 @@ export default function Page() {
                   required
                 />
               </div>
-              <div className="grid gap-2">
+              <div className="grid gap-2 pb-2">
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
                   <Link href="/forgot-password" className="hidden">
