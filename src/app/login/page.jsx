@@ -53,6 +53,7 @@ export default function Page() {
                   id="username"
                   type="username"
                   name="username"
+                  y
                   placeholder="Your username"
                   required
                 />
