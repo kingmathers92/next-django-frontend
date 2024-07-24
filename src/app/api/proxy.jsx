@@ -1,4 +1,5 @@
 import { getToken } from "@/lib/auth";
+
 export default class ApiProxy {
   static async getHeaders(requireAuth) {
     let headers = {
@@ -6,7 +7,7 @@ export default class ApiProxy {
       "Accept": "application/json",
     };
     const authToken = getToken();
-    if (authToken && requireAuth) {
+    if (authToken && requireAuth === true) {
       headers["Authorization"] = `Bearer ${authToken}`;
     }
     return headers;
@@ -24,6 +25,26 @@ export default class ApiProxy {
       status = 500;
     }
     return { data, status };
+  }
+
+  static async put(endpoint, object, requireAuth) {
+    const jsonData = JSON.stringify(object);
+    const headers = await ApiProxy.getHeaders(requireAuth);
+    const requestOptions = {
+      method: "PUT",
+      headers: headers,
+      body: jsonData,
+    };
+    return await ApiProxy.handleFetch(endpoint, requestOptions);
+  }
+
+  static async delete(endpoint, requireAuth) {
+    const headers = await ApiProxy.getHeaders(requireAuth);
+    const requestOptions = {
+      method: "DELETE",
+      headers: headers,
+    };
+    return await ApiProxy.handleFetch(endpoint, requestOptions);
   }
 
   static async post(endpoint, object, requireAuth) {
