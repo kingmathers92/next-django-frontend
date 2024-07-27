@@ -26,7 +26,7 @@ export default function WaitlistTable() {
     }
   }, [auth, error]);
   console.log(error);
-  if (error) return <div>Failed to load</div>;
+  if (error) return <div>Failed to load..</div>;
   if (isLoading) return <div>Loading...</div>;
   console.log(data);
   return (
