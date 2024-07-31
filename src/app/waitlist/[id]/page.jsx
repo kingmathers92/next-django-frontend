@@ -13,7 +13,7 @@ export default function Page({ params }) {
   console.log(data, error, isLoading);
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      {isLoading ? <div>Loading</div> : <WaitlistCard waitlist={data} />}
+      {isLoading ? <div>Loading</div> : <WaitlistCard waitlistEvent={data} />}
     </main>
   );
 }

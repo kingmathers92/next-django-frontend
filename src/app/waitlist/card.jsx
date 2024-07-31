@@ -8,12 +8,16 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-export function WaitlistCard({ waitlist }) {
+export function WaitlistCard({ waitlistEvent }) {
+  if (!waitlistEvent || !waitlistEvent.email) {
+    return null;
+  }
+
   return (
     <Card className="w-[350px]">
       <CardHeader>
-        <CardTitle>{waitlist.email}</CardTitle>
-        <CardDescription>{waitlist.id}</CardDescription>
+        <CardTitle>{waitlistEvent.email}</CardTitle>
+        <CardDescription>{waitlistEvent.id}</CardDescription>
       </CardHeader>
       <CardContent></CardContent>
     </Card>
