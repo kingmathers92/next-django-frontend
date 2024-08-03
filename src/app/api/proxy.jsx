@@ -29,6 +29,16 @@ export default class ApiProxy {
     return { data, status };
   }
 
+  // Method for sending a GET request to the specified endpoint with optional authentication
+  static async get(endpoint, requireAuth) {
+    const headers = await ApiProxy.getHeaders(requireAuth);
+    const requestOptions = {
+      method: "GET",
+      headers: headers,
+    };
+    return await ApiProxy.handleFetch(endpoint, requestOptions);
+  }
+
   // Method for sending a PUT request to the specified endpoint with the given object and optional authentication
   static async put(endpoint, object, requireAuth) {
     const jsonData = JSON.stringify(object);
@@ -59,16 +69,6 @@ export default class ApiProxy {
       method: "POST",
       headers: headers,
       body: jsonData,
-    };
-    return await ApiProxy.handleFetch(endpoint, requestOptions);
-  }
-
-  // Method for sending a GET request to the specified endpoint with optional authentication
-  static async get(endpoint, requireAuth) {
-    const headers = await ApiProxy.getHeaders(requireAuth);
-    const requestOptions = {
-      method: "GET",
-      headers: headers,
     };
     return await ApiProxy.handleFetch(endpoint, requestOptions);
   }
