@@ -14,7 +14,7 @@ export default function WaitlistForm() {
   async function handleSubmit(e) {
     e.preventDefault();
     setMessage("");
-    setErrors("");
+    setErrors({});
     setError("");
     const formData = new FormData(e.target);
     const objectFromForm = Object.fromEntries(formData);
